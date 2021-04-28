@@ -12,7 +12,7 @@ const CustomList = ({id,chatName,enterChat}) => {
           rounded
           source={{
             uri:
-              "https://p7.hiclipart.com/preview/7/618/505/avatar-icon-fashion-men-vector-avatar.jpg",
+              "https://st2.depositphotos.com/2703645/5669/v/600/depositphotos_56695433-stock-illustration-female-avatar.jpg",
           }}
           size={50}
         />

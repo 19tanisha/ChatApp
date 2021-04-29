@@ -1,18 +1,28 @@
-import React from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {ListItem,Avatar} from 'react-native-elements';
 import { useLayoutEffect } from 'react';
+import { db } from '../Firebase';
 const CustomList = ({id,chatName,enterChat}) => {
+const [chatMessages, setChatMessages] =useState([]);
 
+useEffect(() => {
+  const unsubscribe = db
+  .collection('chats').doc(id).collection('messages').orderBy('timestamp','desc')
+  .onSnapshot((snapshot)=>
+  setChatMessages(snapshot.docs.map((doc)=> doc.data()))
+  );
+  return unsubscribe;
+});
     return (
       <ListItem 
-      onPress ={()=>enterChat(id,chatName)}
+      key={id} onPress ={()=>enterChat(id,chatName)}
       key ={id} bottomDivider>
         <Avatar
           rounded
           source={{
-            uri:
-              "https://st2.depositphotos.com/2703645/5669/v/600/depositphotos_56695433-stock-illustration-female-avatar.jpg",
+            uri: chatMessages?[0]?.photoURL ||
+              "https://st2.depositphotos.com/2703645/5669/v/600/depositphotos_56695433-stock-illustration-female-avatar.jpg"
           }}
           size={50}
         />
@@ -21,7 +31,62 @@ const CustomList = ({id,chatName,enterChat}) => {
           <ListItem.Title style={{ fontWeight: "bold" }}>{chatName}</ListItem.Title>
           <ListItem.Subtitle numberOfLines={1}
             ellipsizeMode="tail"
-          > Enter chat</ListItem.Subtitle>
+          >{chatMessages?.[0]?.displayName}: {chatMessages?.[0]?.message} </ListItem.Subtitle>
+        </ListItem.Content>
+      </ListItem>
+    );
+}
+
+export default CustomList
+
+const styles = StyleSheet.create({})*/
+
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import {ListItem,Avatar} from 'react-native-elements';
+import { useLayoutEffect } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { db } from '../Firebase';
+const CustomList = ({id,chatName,enterChat}) => {
+  const [chatMessages,setChatMessages] = useState([]);
+
+  useEffect(()=>{
+    const unsubscribe = db
+    .collection('chats')
+    .doc(id)
+    .collection('messages')
+    .orderBy('timestamp')
+    .onSnapshot((snapshot) => 
+      setChatMessages(snapshot.docs.map(doc=> doc.data()))
+    );
+    return unsubscribe;
+  })
+
+    return (
+      <ListItem
+        key={id}
+        onPress={() => enterChat(id, chatName)}
+        key={id}
+        bottomDivider
+      >
+        <Avatar
+          rounded
+          source={{
+            uri:
+              chatMessages?.[0]?.photoURL ||
+              "https://p7.hiclipart.com/preview/7/618/505/avatar-icon-fashion-men-vector-avatar.jpg",
+          }}
+          size={50}
+        />
+
+        <ListItem.Content>
+          <ListItem.Title style={{ fontWeight: "bold" }}>
+            {chatName}
+          </ListItem.Title>
+          <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
+            {chatMessages?.[0]?.displayName} :{chatMessages?.[0]?.message}
+          </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
     );

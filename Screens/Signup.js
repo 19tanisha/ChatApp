@@ -4,7 +4,9 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  Image,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 import {auth } from '../Firebase'
@@ -35,44 +37,52 @@ useLayoutEffect(()=>{
   };
   return (
     <KeyboardAvoidingView behaviour="padding" style={styles.container}>
-      <Image
-        source={{
-          uri:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Signal-Logo.svg/600px-Signal-Logo.svg.png",
-        }}
+      <ImageBackground 
+        blurRadius={0.5}
+        mode='cover'
         style={styles.img}
-      />
-      <Input
-        placeholder="name"
+        source={{uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVM0fmg6JSYT5hp8LINE9iSbiKW3olxv7vcg&usqp=CAU"}}>
+      
+      <TextInput
+      style={styles.input}
+        placeholder="Name:"
         type="name"
         value={name}
         onChangeText={(text) => setName(text)}
       />
-      <Input
-        placeholder="Email"
+      <TextInput
+      style={styles.input}
+        placeholder="Email:"
         type="email"
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
-      <Input
-        placeholder="password"
+      <TextInput
+      style={styles.input}
+        placeholder="Password:"
         secureTextEntry
         type="password"
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <Input
-        placeholder="ImageUrl (optional)"
+      <TextInput
+      style={styles.input}
+        placeholder="ImageUrl (optional):"
         type="imageUrl"
         value={imageUrl}
         onChangeText={(text) => setImageUrl(text)}
         onSubmitEditing={register}
       />
-      <Button title="Signup" onPress={register} />
-      <Button
-        title="Login"
-        onPress={() => navigation.navigate("Login")}
-      />
+      <TouchableOpacity  onPress={register}>
+          <View style={styles.button}>
+            <Text style={{fontSize:15, fontWeight:'bold'}}>
+              SignIn
+            </Text>
+          </View>
+        </TouchableOpacity>
+    
+      </ImageBackground>
+      
     </KeyboardAvoidingView>
   );
 };
@@ -86,8 +96,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   img: {
-    width: 150,
-    height: 150,
-    marginBottom: 50,
-  },
+    width:"100%",
+    height:"100%",
+    alignItems:'center',
+    justifyContent:'center',
+},
+input:{
+  backgroundColor: "white",
+  height: 45,
+  width: "80%",
+  borderRadius: 20,
+  paddingLeft: 10,
+  color: "black",
+  fontSize: 15,
+  borderWidth: 2,
+  borderColor: "black",
+  borderBottomWidth: 4,
+  margin: 5,
+},
+button: {
+  backgroundColor: "#81b214",
+  height: 35,
+  width: 90,
+  alignItems: "center",
+  justifyContent: "center",
+  margin: 8,
+  borderRadius: 20,
+  borderWidth: 2,
+  borderColor: "black",
+  borderBottomWidth: 4,
+},
 });
